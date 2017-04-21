@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour {
         CanIdle();
         CanMove();
         Moving();
+        AnimatorController();
 	}
 
     #region Metodos criados pelo desenvolvedor
@@ -58,6 +59,8 @@ public class PlayerController : MonoBehaviour {
     {
         isIdle = false;
         isCanMove = true;
+
+        jumpStart = true;
     }
 
     void CanMove()
@@ -83,6 +86,8 @@ public class PlayerController : MonoBehaviour {
 
             if (Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
             {
+                jumpStart = false;
+                isJumping = true;
                 isMoving = true;
                 isCanMove = false;
             }
@@ -103,11 +108,26 @@ public class PlayerController : MonoBehaviour {
     {
         isIdle = true;
         isMoving = false;
+        isJumping = false;
     }
 
     void GoHit()
     {
 
+    }
+
+    void AnimatorController()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow)) { transform.rotation = Quaternion.Euler(0, 0, 0);
+        } else if (Input.GetKeyDown(KeyCode.RightArrow)) { transform.rotation = Quaternion.Euler(0, 90, 0);
+        } else if (Input.GetKeyDown(KeyCode.DownArrow)) { transform.rotation = Quaternion.Euler(0, 180, 0);
+        } else if (Input.GetKeyDown(KeyCode.LeftArrow)) { transform.rotation = Quaternion.Euler(0, -90, 0);}
+
+        playAnimator.SetBool("dead", isDead);
+
+        playAnimator.SetBool("preJump", jumpStart);
+
+        playAnimator.SetBool("jump", isJumping);
     }
 
     #endregion
