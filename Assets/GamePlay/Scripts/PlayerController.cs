@@ -29,14 +29,16 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        AnimatorController();
         CanIdle();
         CanMove();
         Moving();
-        AnimatorController();
+
 	}
 
     #region Metodos criados pelo desenvolvedor
 
+    // metodo que aguarda pressiona as teclas de movimentos emquanto o player esta parado.
     void CanIdle()
     {
         if (isIdle)
@@ -48,11 +50,18 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    // verifica se ha obstaculos para permitir o movimento do player ou nao.
     void CheckIfCanMove()
     {
         // TODO  raycast para verificar possivel obstaculos
+        RaycastHit hit;
+        Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 5, transform.position.z), transform.forward, out hit, moveDistance);
+        Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 5, transform.position.z), transform.forward * moveDistance, Color.red, 3);
 
-        SetMove();
+        if (hit.collider == null)
+            SetMove();
+        else if (hit.collider.tag != "collider") SetMove();
+        else print("tem obstaculo.");
     }
 
     void SetMove()
