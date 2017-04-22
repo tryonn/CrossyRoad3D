@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        //if (isDead) return;
+
         AnimatorController();
         CanIdle();
         CanMove();
@@ -122,7 +124,7 @@ public class PlayerController : MonoBehaviour {
 
     void GoHit()
     {
-
+        isDead = true;
     }
 
     void AnimatorController()
@@ -139,5 +141,27 @@ public class PlayerController : MonoBehaviour {
         playAnimator.SetBool("jump", isJumping);
     }
 
+    #endregion
+
+
+    #region metodos da unity
+    private void OnTriggerEnter(Collider other)
+    {
+        switch (other.tag)
+        {
+            case "moeda":
+                print("peguei uma moeda");
+                Destroy(other.gameObject);
+                break;
+            case "tomate":
+                print("peguei um tomate");
+                Destroy(other.gameObject);
+                break;
+            case "hit":
+                print("morreu");
+                GoHit();
+                break;
+        }
+    }
     #endregion
 }
