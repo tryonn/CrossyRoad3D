@@ -34,6 +34,7 @@ public class SpawnController : MonoBehaviour {
         {
             int id = Random.Range(0, veiculos.Count); // faz sorteio de qual veiculo será lancado;
             GameObject tempVeiculo = Instantiate(veiculos[id], transform.position, transform.rotation);
+            tempVeiculo.transform.parent = transform;
             tempVeiculo.GetComponent<Mover>().moveSpeed = speedMove;
             if (esquerda) tempVeiculo.transform.rotation = Quaternion.Euler(0, 180, 0);
 
