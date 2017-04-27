@@ -3436,6 +3436,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e3609341ead1b64ba671d2c9bd2b3ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 1
+  hudInfoGamePlay: {fileID: 1318282019}
+  hudTitulo: {fileID: 308283459}
+  hudGameOver: {fileID: 1982181179}
+  hudLoading: {fileID: 1189196909}
+  hudLoja: {fileID: 1043372321}
+  moedasTxt: {fileID: 1396178365}
+  tempoTxt: {fileID: 812332639}
+  faseTxt: {fileID: 1191741463}
+  moedasMapaTxt: {fileID: 788277731}
+  tomateMapaTxt: {fileID: 1563296119}
+  moedas: 0
+  tempo: 99
+  fase: 1
+  moedasMapa: 0
+  tomatesMapa: 0
+  moedasColetadas: 0
+  tomatesColetados: 0
 --- !u!1001 &738628257
 Prefab:
   m_ObjectHideFlags: 0
@@ -6909,7 +6927,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1318282020
 RectTransform:
   m_ObjectHideFlags: 0
