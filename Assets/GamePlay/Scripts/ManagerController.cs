@@ -13,27 +13,49 @@ public enum GameState
 
 public class ManagerController : MonoBehaviour {
 
+    private PlayerController player;
+
     public GameState currentState;
 
     [Header("HUD GAME")]
     public GameObject hudInfoGamePlay, hudTitulo, hudGameOver, hudLoading, hudLoja;
 
     [Header("HUD GAME Atributos")]
-    public Text moedasTxt, tempoTxt, faseTxt, moedasMapaTxt, tomateMapaTxt;
+    public Text moedasTxt, tempoTxt, faseTxt, moedasMapaTxt, tomateMapaTxt, precoPersonagemTxt;
 
     
-    public int moedas, tempo, fase, moedasMapa, tomatesMapa, moedasColetadas, tomatesColetados;
+    public int moedas, tempo, fase, moedasMapa, tomatesMapa, moedasColetadas, tomatesColetados, precoPersonagem;
 
 
 	// Use this for initialization
 	void Start () {
+        player = FindObjectOfType(typeof(PlayerController)) as PlayerController;
+
+        moedasTxt.text = moedas.ToString();
 
         switch (currentState)
         {
             case GameState.TITULO:
+                hudInfoGamePlay.SetActive(false);
+                hudTitulo.SetActive(true);
+                hudGameOver.SetActive(false);
+                hudLoading.SetActive(false);
+                hudLoja.SetActive(false);
+
                 break;
             case GameState.GAMEPLAY:
                 StartCoroutine("ContagemRegressiva");
+
+                hudInfoGamePlay.SetActive(true);
+                hudTitulo.SetActive(false);
+                hudGameOver.SetActive(false);
+                hudLoading.SetActive(false);
+                hudLoja.SetActive(false);
+
+                break;
+
+            case GameState.GAMEOVER:
+
                 break;
         }
 
@@ -55,7 +77,7 @@ public class ManagerController : MonoBehaviour {
 
         if (tempo == 0)
         {
-            currentState = GameState.GAMEOVER;
+            player.GoHit();
         }
 
         if (currentState == GameState.GAMEPLAY)
@@ -75,6 +97,13 @@ public class ManagerController : MonoBehaviour {
         tempo += valor;
         tempoTxt.text = tempo.ToString();
         tomatesColetados += 1;
+    }
+
+    public void GameOver()
+    {
+        currentState = GameState.GAMEOVER;
+        hudInfoGamePlay.SetActive(false);
+        hudGameOver.SetActive(true);
     }
     #endregion
 }

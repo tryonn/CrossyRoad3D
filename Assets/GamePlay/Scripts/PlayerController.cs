@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    private ManagerController manager;
+
     public Animator playAnimator;
 
     public float moveDistance;      //  Distancia a ser movida
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        manager = FindObjectOfType(typeof(ManagerController)) as ManagerController;
         isIdle = true;
 	}
 	
@@ -30,6 +33,8 @@ public class PlayerController : MonoBehaviour {
 	void Update ()
     {
         //if (isDead) return;
+
+        if (manager.currentState != GameState.GAMEPLAY) return;
 
         AnimatorController();
         CanIdle();
@@ -122,9 +127,12 @@ public class PlayerController : MonoBehaviour {
         isJumping = false;
     }
 
-    void GoHit()
+    public void GoHit()
     {
         isDead = true;
+        playAnimator.SetBool("dead", isDead);
+        manager.GameOver();
+
     }
 
     void AnimatorController()
@@ -151,10 +159,12 @@ public class PlayerController : MonoBehaviour {
         {
             case "moeda":
                 print("peguei uma moeda");
+                manager.AtualizarMoedas(1);
                 Destroy(other.gameObject);
                 break;
             case "tomate":
                 print("peguei um tomate");
+                manager.AtualizarTempo(5);
                 Destroy(other.gameObject);
                 break;
             case "hit":
