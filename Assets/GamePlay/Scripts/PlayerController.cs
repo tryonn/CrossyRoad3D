@@ -19,6 +19,16 @@ public class PlayerController : MonoBehaviour {
     public bool isJumping;          //  indica se o personagem esta puland
 
 
+    [Header("Audios")]
+    public AudioClip audioIdle1;
+    public AudioClip audioIdle2;
+    public AudioClip audioHop;
+    public AudioClip audioHit;
+    public AudioClip audioSplash;
+    public AudioClip audioCoin;
+    private AudioSource tocarSom;
+
+
 
     public Vector3 target;          // armazena o destino do movimento
 
@@ -26,6 +36,7 @@ public class PlayerController : MonoBehaviour {
     void Start ()
     {
         manager = FindObjectOfType(typeof(ManagerController)) as ManagerController;
+        tocarSom = GetComponent<AudioSource>();
         isIdle = true;
 	}
 	
@@ -53,6 +64,7 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
             {
                 CheckIfCanMove();
+                tocarSom.PlayOneShot(audioIdle1);
             }
         }
     }
@@ -106,6 +118,7 @@ public class PlayerController : MonoBehaviour {
                 isJumping = true;
                 isMoving = true;
                 isCanMove = false;
+                tocarSom.PlayOneShot(audioHop);
             }
         }
     }
@@ -125,11 +138,13 @@ public class PlayerController : MonoBehaviour {
         isIdle = true;
         isMoving = false;
         isJumping = false;
+        tocarSom.PlayOneShot(audioIdle2);
     }
 
     public void GoHit()
     {
         isDead = true;
+        tocarSom.PlayOneShot(audioHit);
         playAnimator.SetBool("dead", isDead);
         manager.GameOver();
 
@@ -159,16 +174,19 @@ public class PlayerController : MonoBehaviour {
         {
             case "moeda":
                 print("peguei uma moeda");
+                tocarSom.PlayOneShot(audioCoin);
                 manager.AtualizarMoedas(1);
                 Destroy(other.gameObject);
                 break;
             case "tomate":
                 print("peguei um tomate");
+                tocarSom.PlayOneShot(audioCoin);
                 manager.AtualizarTempo(5);
                 Destroy(other.gameObject);
                 break;
             case "hit":
                 print("morreu");
+                tocarSom.PlayOneShot(audioHit);
                 GoHit();
                 break;
         }
