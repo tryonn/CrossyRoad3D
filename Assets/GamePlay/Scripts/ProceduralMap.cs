@@ -53,11 +53,64 @@ public class ProceduralMap : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
+        MontarMapa();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    #region Metodos criados pelo desenvolvedor
+    public void MontarMapa()
+    {
+        int idBloco = 0;
+        int meio = blocosLinhas / 2;
+        float posXInicial = (meio * tamanhoBloco) *-1;
+        float posZInicial = (qtdLimitadoresBlocos * tamanhoBloco) * -1;
+
+
+        // gera as linhas iniciais do mapa
+        for (int linha = 0; linha < qtdLinhasInicioFim; linha++)
+        {
+            GerarLinha(blocoPrefab[idBloco], meio, posXInicial, ocupaBlocos[idBloco], temDecoracao[idBloco], temColetavel[idBloco], !temDecoracao[idBloco], idBloco);
+        }
+
+
+        // gera linhas jogaveis (mapa en si)
+        for (int linha = 0; linha < qtdLinhas; linha++)
+        {
+            idBloco = Random.Range(0, blocoPrefab.Length);
+
+            GerarLinha(blocoPrefab[idBloco], meio, posXInicial, ocupaBlocos[idBloco], temDecoracao[idBloco], temColetavel[idBloco], !temDecoracao[idBloco], idBloco);
+        }
+    }
+    void GerarLinha(GameObject _blocoPrefab, int _meio, float _posXInicial, int _ocupaBlocos, bool _decoravel, bool _coletavel, bool _spawn, int _idBloco)
+    {
+        Vector3 posicaoBloco = Vector3.zero;
+
+        for (int blocoAtual = 0; blocoAtual <= blocosLinhas; blocoAtual++)
+        {
+            posicaoBloco = new Vector3(_posXInicial + (tamanhoBloco * blocoAtual), _blocoPrefab.transform.position.y, _blocoPrefab.transform.position.z + (tamanhoBloco * limiteLinhaCena));
+            Instantiate(_blocoPrefab, posicaoBloco, _blocoPrefab.transform.rotation, blocosJogaveis);
+        }
+
+        limiteLinhaCena += _ocupaBlocos;
+
+    }
+
+    void GerarLinhaInicialFinal()
+    {
+
+    }
+
+    void InserirDecoracao()
+    {
+
+    }
+    void InserirColetaveis()
+    {
+
+    }
+
+    void InserirSpawnBlocos()
+    {
+
+    }
+    #endregion
 }

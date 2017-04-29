@@ -914,9 +914,52 @@ MonoBehaviour:
   m_GameObject: {fileID: 695288628}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa71b59e498e41348973c67b286fd5e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b3a3ca13ba0fd64db406024abc36c9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tamanhoBloco: 20
+  blocoPrefab:
+  - {fileID: 1124148917149542, guid: f2716c3047d5df94bb3cf5089a0233b4, type: 2}
+  - {fileID: 1604270384991340, guid: 49f36f2473d7fb3498ad827e12795e30, type: 2}
+  - {fileID: 1516634626535716, guid: e1416b0b98954d444a3c6b5cdae8372e, type: 2}
+  - {fileID: 1706682761533936, guid: 2a32ae08a26539e48a91a0735e699fd1, type: 2}
+  - {fileID: 1956331278211508, guid: fc98c101af2ff4a4386ea5fd5806653c, type: 2}
+  ocupaBlocos: 0100000001000000020000000300000001000000
+  temDecoracao: 0100000000
+  temColetavel: 0101010101
+  idBlocoAgua: 4
+  spawnAguaL: 0
+  blocoChegada: {fileID: 1153856807802310, guid: 4d297528b73b7f643b12786c0de09ea4,
+    type: 2}
+  blocoLimitador: {fileID: 0}
+  spawnPrefab: {fileID: 1826396302328088, guid: de3540742d103524ebed0863368185d5,
+    type: 2}
+  limiteLinhaCena: 0
+  blocosLinhas: 10
+  qtdLinhas: 10
+  qtdLinhasInicioFim: 3
+  qtdLimitadoresBlocos: 5
+  decoracaoPrefab:
+  - {fileID: 1516573935825318, guid: d775a100737ffec44af45f6a53e3b75c, type: 2}
+  coletaveisPrefab:
+  - {fileID: 1898512085806412, guid: a2be5f413edf15f41972a021a6ce265b, type: 2}
+  - {fileID: 1916616243259070, guid: 506c2ca9cb617b0469d15e51e24015eb, type: 2}
+  nomeColetavel:
+  - Moeda
+  - Tomate
+  chanceDecoracao: 15
+  prioridadeColetavel: 35
+  chanceColetavel: 15
+  blocos0: []
+  blocos1: []
+  blocos2: []
+  blocos3: []
+  blocos4: []
+  blocos5: []
+  blocosJogaveis: {fileID: 1009770588}
+  blocosLimitadores: {fileID: 73462786}
+  blocosDecoracao: {fileID: 1141889216}
+  blocosColetaveis: {fileID: 313128658}
 --- !u!1 &737231247
 GameObject:
   m_ObjectHideFlags: 0
