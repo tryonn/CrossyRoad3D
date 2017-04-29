@@ -32,10 +32,16 @@ public class ManagerController : MonoBehaviour {
     public Mesh[] skinPersonagem;
     private MeshFilter meshPersonage;
     private int idPersonagem; // valor inicial igual a zero
+    public int[] precoPersonagens;
+
 
 
 	// Use this for initialization
 	void Start () {
+
+        PlayerPrefs.SetInt("Personagem0", 1);
+
+
         player = FindObjectOfType(typeof(PlayerController)) as PlayerController;
 
         meshPersonage = player.GetComponentInChildren<MeshFilter>();
@@ -45,7 +51,10 @@ public class ManagerController : MonoBehaviour {
 
         meshPersonage.mesh = skinPersonagem[idPersonagem];
 
+        moedas = PlayerPrefs.GetInt("moedas");
         moedasTxt.text = moedas.ToString();
+
+        precoPersonagemTxt.text = precoPersonagens[idPersonagem].ToString();
 
         switch (currentState)
         {
@@ -83,8 +92,24 @@ public class ManagerController : MonoBehaviour {
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                hudLoading.SetActive(true);
-                SceneManager.LoadSceneAsync("demo1");
+                if (PlayerPrefs.GetInt("Personagem" + idPersonagem.ToString()) == 1)
+                {
+                    hudLoading.SetActive(true);
+                    SceneManager.LoadSceneAsync("demo1");
+                } else
+                {
+                    if (moedas >= precoPersonagens[idPersonagem])
+                    {
+                        PlayerPrefs.SetInt("Personagem" + idPersonagem.ToString(), 1);
+                        moedas -= precoPersonagens[idPersonagem];
+                        PlayerPrefs.SetInt("moedas", moedas);
+                        PlayerPrefs.SetInt("IdPersoangemAtual", idPersonagem); // grava o id do personagem atual para ir selecionado
+
+                        hudLoja.SetActive(true);
+                        SceneManager.LoadSceneAsync("demo1");
+                    }
+                }
+
             }
 
             if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -123,7 +148,9 @@ public class ManagerController : MonoBehaviour {
     {
         moedas += valor;
         moedasTxt.text = moedas.ToString();
+        PlayerPrefs.SetInt("moedas", moedas);
         moedasColetadas += 1;
+
     }
 
     public void AtualizarTempo(int valor)
@@ -171,9 +198,20 @@ public class ManagerController : MonoBehaviour {
         }
 
         meshPersonage.mesh = skinPersonagem[idPersonagem];
-        PlayerPrefs.SetInt("IdPersoangemAtual", idPersonagem);
 
-        print(idPersonagem);
+
+
+        precoPersonagemTxt.text = precoPersonagens[idPersonagem].ToString();
+
+        // verifica se termos o personagem para exibir ou nao o hud loja.
+        if (PlayerPrefs.GetInt("Personagem" + idPersonagem.ToString()) == 0)
+        {
+            hudLoja.SetActive(true);
+        } else
+        {
+            hudLoja.SetActive(false);
+            PlayerPrefs.SetInt("IdPersoangemAtual", idPersonagem);
+        }
     }
     #endregion
 }
