@@ -3488,6 +3488,12 @@ MonoBehaviour:
   moedasColetadas: 0
   tomatesColetados: 0
   precoPersonagem: 0
+  skinPersonagem:
+  - {fileID: 4300000, guid: 5c768bbe784f3384380329ba4c42115d, type: 3}
+  - {fileID: 4300000, guid: 329be31671af6034ab5e8bdffd8881c6, type: 3}
+  - {fileID: 4300000, guid: 9e53e5be1c1019748a301de9850bb046, type: 3}
+  - {fileID: 4300000, guid: 2bc4872676bb9ed4590bb69cae1919ff, type: 3}
+  - {fileID: 4300000, guid: 527ad96d0c1cfbe408762bf42bbda41a, type: 3}
 --- !u!1001 &738628257
 Prefab:
   m_ObjectHideFlags: 0
