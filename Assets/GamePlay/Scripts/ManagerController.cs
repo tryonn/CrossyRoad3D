@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -18,7 +19,7 @@ public class ManagerController : MonoBehaviour {
     public GameState currentState;
 
     [Header("HUD GAME")]
-    public GameObject hudInfoGamePlay, hudTitulo, hudGameOver, hudLoading, hudLoja;
+    public GameObject hudInfoGamePlay, hudTitulo, hudGameOver, hudLoading, hudLoja, btnFechar;
 
     [Header("HUD GAME Atributos")]
     public Text moedasTxt, tempoTxt, faseTxt, moedasMapaTxt, tomateMapaTxt, precoPersonagemTxt;
@@ -41,7 +42,7 @@ public class ManagerController : MonoBehaviour {
                 hudGameOver.SetActive(false);
                 hudLoading.SetActive(false);
                 hudLoja.SetActive(false);
-
+                btnFechar.SetActive(true);
                 break;
             case GameState.GAMEPLAY:
                 StartCoroutine("ContagemRegressiva");
@@ -51,11 +52,12 @@ public class ManagerController : MonoBehaviour {
                 hudGameOver.SetActive(false);
                 hudLoading.SetActive(false);
                 hudLoja.SetActive(false);
+                btnFechar.SetActive(false);
 
                 break;
 
             case GameState.GAMEOVER:
-
+                btnFechar.SetActive(true);
                 break;
         }
 
@@ -64,7 +66,14 @@ public class ManagerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (currentState == GameState.TITULO)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                hudLoading.SetActive(true);
+                SceneManager.LoadSceneAsync("demo1");
+            }
+        }
 	}
 
     #region Metodos criados pelo desenvolvedor
@@ -82,7 +91,11 @@ public class ManagerController : MonoBehaviour {
 
         if (currentState == GameState.GAMEPLAY)
         {
+            btnFechar.SetActive(false);
             StartCoroutine("ContagemRegressiva");
+        } else
+        {
+            btnFechar.SetActive(true);
         }
     }
     public void AtualizarMoedas(int valor)
@@ -104,6 +117,24 @@ public class ManagerController : MonoBehaviour {
         currentState = GameState.GAMEOVER;
         hudInfoGamePlay.SetActive(false);
         hudGameOver.SetActive(true);
+        btnFechar.SetActive(true);
+    }
+
+    public void JogarNovamente()
+    {
+        hudLoading.SetActive(true);
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+    }
+
+    public void VoltarTitulo()
+    {
+        hudLoading.SetActive(true);
+        SceneManager.LoadSceneAsync("titulo");
+    }
+
+    public void Sair()
+    {
+        Application.Quit();
     }
     #endregion
 }
