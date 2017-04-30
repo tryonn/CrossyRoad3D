@@ -68,7 +68,16 @@ public class ProceduralMap : MonoBehaviour {
         // gera as linhas iniciais do mapa
         for (int linha = 0; linha < qtdLinhasInicioFim; linha++)
         {
-            GerarLinha(blocoPrefab[idBloco], meio, posXInicial, ocupaBlocos[idBloco], temDecoracao[idBloco], temColetavel[idBloco], !temDecoracao[idBloco], idBloco);
+            bool dec = false;
+            if (linha == 0)
+            {
+                dec = false;
+            } else
+            {
+                dec = true;
+            }
+
+            GerarLinha(blocoPrefab[idBloco], meio, posXInicial, ocupaBlocos[idBloco], dec, dec, !temDecoracao[idBloco], idBloco);
         }
 
 
@@ -88,6 +97,22 @@ public class ProceduralMap : MonoBehaviour {
         {
             posicaoBloco = new Vector3(_posXInicial + (tamanhoBloco * blocoAtual), _blocoPrefab.transform.position.y, _blocoPrefab.transform.position.z + (tamanhoBloco * limiteLinhaCena));
             Instantiate(_blocoPrefab, posicaoBloco, _blocoPrefab.transform.rotation, blocosJogaveis);
+
+            //parte de coletaveis e decorados
+            if (_decoravel && _coletavel)
+            {
+                int rand = Random.Range(0, 100);
+                if (rand < prioridadeColetavel)
+                {
+                    InserirColetaveis(posicaoBloco, _ocupaBlocos);
+                } else
+                {
+                    InserirDecoracao(posicaoBloco);
+                }
+            } else if (!_decoravel && _coletavel)
+            {
+                InserirColetaveis(posicaoBloco, _ocupaBlocos);
+            }
         }
 
         limiteLinhaCena += _ocupaBlocos;
@@ -99,13 +124,27 @@ public class ProceduralMap : MonoBehaviour {
 
     }
 
-    void InserirDecoracao()
+    void InserirDecoracao(Vector3 _posicaoBloco)
     {
+        int rand = Random.Range(0, 100);
+        if (rand <= chanceDecoracao)
+        {
+            int idDec = Random.Range(0, decoracaoPrefab.Length);
+            Instantiate(decoracaoPrefab[idDec], new Vector3(_posicaoBloco.x, _posicaoBloco.y + tamanhoBloco, _posicaoBloco.z), decoracaoPrefab[idDec].transform.rotation, blocosDecoracao);
 
+        }
     }
-    void InserirColetaveis()
+    void InserirColetaveis(Vector3 _posicaoBloco, int _ocupaBlocos)
     {
-
+        for (int i = 0; i < _ocupaBlocos; i++)
+        {
+            int rand = Random.Range(0, 100);
+            if (rand <= chanceColetavel)
+            {
+                int idColetavel = Random.Range(0, coletaveisPrefab.Length);
+                Instantiate(coletaveisPrefab[idColetavel], new Vector3(_posicaoBloco.x, _posicaoBloco.y + tamanhoBloco, _posicaoBloco.z + (tamanhoBloco * i)), coletaveisPrefab[idColetavel].transform.rotation, blocosColetaveis);
+            }
+        }
     }
 
     void InserirSpawnBlocos()

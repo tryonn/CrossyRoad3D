@@ -936,7 +936,7 @@ MonoBehaviour:
     type: 2}
   limiteLinhaCena: 0
   blocosLinhas: 10
-  qtdLinhas: 10
+  qtdLinhas: 20
   qtdLinhasInicioFim: 3
   qtdLimitadoresBlocos: 5
   decoracaoPrefab:
@@ -948,8 +948,8 @@ MonoBehaviour:
   - Moeda
   - Tomate
   chanceDecoracao: 15
-  prioridadeColetavel: 35
-  chanceColetavel: 15
+  prioridadeColetavel: 20
+  chanceColetavel: 10
   blocos0: []
   blocos1: []
   blocos2: []
