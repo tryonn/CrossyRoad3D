@@ -50,6 +50,7 @@ public class ProceduralMap : MonoBehaviour {
     public Transform blocosLimitadores;
     public Transform blocosDecoracao;
     public Transform blocosColetaveis;
+    public Transform blocosSpawn;
 
     // Use this for initialization
     void Start () {
@@ -161,6 +162,12 @@ public class ProceduralMap : MonoBehaviour {
             }
         }
 
+        //
+        if (_spawn)
+        {
+            SpawnLinha(_meio, _idBloco, _ocupaBlocos);
+        }
+
         // gerar blocos limite lado direito
         for (int blocoAtual = 0; blocoAtual < qtdLimitadoresBlocos; blocoAtual++)
         {
@@ -222,9 +229,83 @@ public class ProceduralMap : MonoBehaviour {
         }
     }
 
-    void InserirSpawnBlocos()
+    void SpawnLinha(int _meio, int _idBloco, int _ocupaBlocos)
     {
+        float psX = 0;
+        float psY = 0;
+        float psZ = 0;
 
+        Vector3 posicaoBloco = Vector3.zero;
+        bool esquerdo;
+        int rand = Random.Range(0, 100);
+
+
+        switch (_ocupaBlocos)
+        {
+            case 1: // estrada simples e agua
+                psX = (_meio + qtdLimitadoresBlocos) * tamanhoBloco;
+                psY = tamanhoBloco;
+                psZ = tamanhoBloco * limiteLinhaCena;
+
+                if (rand < 50)
+                {
+                    esquerdo = true;
+                    psX *= -1;
+                    posicaoBloco = new Vector3(psX, psY, psZ);
+                }
+                else
+                {
+                    posicaoBloco = new Vector3(psX, psY, psZ);
+                    esquerdo = false;
+                }
+                InserirSpawnBlocos(posicaoBloco, esquerdo, _idBloco);
+
+
+                break;
+            case 2: // estrada dupla
+                psX = ((_meio + qtdLimitadoresBlocos) * tamanhoBloco) * -1;
+                psY = tamanhoBloco;
+                psZ = tamanhoBloco * limiteLinhaCena;
+                posicaoBloco = new Vector3(psX, psY, psZ);
+                InserirSpawnBlocos(posicaoBloco, true, _idBloco);
+
+
+                psX = ((_meio + qtdLimitadoresBlocos) * tamanhoBloco);
+                psY = tamanhoBloco;
+                psZ = (tamanhoBloco * limiteLinhaCena) + tamanhoBloco;
+                posicaoBloco = new Vector3(psX, psY, psZ);
+                InserirSpawnBlocos(posicaoBloco, false, _idBloco);
+
+                break;
+            case 3: // ferrovia
+                psX = (_meio + qtdLimitadoresBlocos) * tamanhoBloco;
+                psY = tamanhoBloco;
+                psZ = (tamanhoBloco * limiteLinhaCena) + tamanhoBloco;
+
+                if (rand < 50)
+                {
+                    esquerdo = true;
+                    psX *= -1;
+                    posicaoBloco = new Vector3(psX, psY, psZ);
+                }
+                else
+                {
+                    posicaoBloco = new Vector3(psX, psY, psZ);
+                    esquerdo = false;
+                }
+                InserirSpawnBlocos(posicaoBloco, esquerdo, _idBloco);
+                break;
+        }
+
+
+        
+    }
+
+    void InserirSpawnBlocos(Vector3 _posicaoBloco, bool _esquerdo, int _idBloco)
+    {
+        GameObject spw = Instantiate(spawnPrefab, _posicaoBloco, spawnPrefab.transform.rotation, blocosSpawn);
+        // inserir informações no objeto spawn
+        spw.GetComponent<SpawnController>().esquerda = _esquerdo;
     }
     #endregion
 }
