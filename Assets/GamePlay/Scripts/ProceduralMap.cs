@@ -65,6 +65,14 @@ public class ProceduralMap : MonoBehaviour {
         float posZInicial = (qtdLimitadoresBlocos * tamanhoBloco) * -1;
 
 
+
+        // gera linhas -  limitadores do mapa - linhas nao jogaveis
+        for (int linha = 0; linha < qtdLimitadoresBlocos; linha++)
+        {
+            GerarLinhaInicialFinal(blocoPrefab[idBloco], meio, linha, posXInicial - (tamanhoBloco * qtdLimitadoresBlocos), posZInicial);
+        }
+
+
         // gera as linhas iniciais do mapa
         for (int linha = 0; linha < qtdLinhasInicioFim; linha++)
         {
@@ -88,11 +96,49 @@ public class ProceduralMap : MonoBehaviour {
 
             GerarLinha(blocoPrefab[idBloco], meio, posXInicial, ocupaBlocos[idBloco], temDecoracao[idBloco], temColetavel[idBloco], !temDecoracao[idBloco], idBloco);
         }
+
+        // gera as linhas finais (chegada)
+        for (int linha = 0; linha < qtdLinhasInicioFim; linha++)
+        {
+            GerarLinha(blocoChegada, meio, posXInicial, 1, false, false, false, idBloco);
+        }
+
+
+        // linhas nao jogaveis no final da fase.(chegada)
+        idBloco = 0; //bloco de grama
+        for (int linha = 0; linha < qtdLimitadoresBlocos; linha++)
+        {
+            GerarLinhaInicialFinal(blocoPrefab[idBloco], meio, linha, posXInicial - (tamanhoBloco * qtdLimitadoresBlocos), limiteLinhaCena * tamanhoBloco);
+        }
+
     }
+
+
     void GerarLinha(GameObject _blocoPrefab, int _meio, float _posXInicial, int _ocupaBlocos, bool _decoravel, bool _coletavel, bool _spawn, int _idBloco)
     {
         Vector3 posicaoBloco = Vector3.zero;
 
+        // gerar blocos limite lado esquerdo
+        for (int blocoAtual = 0; blocoAtual < qtdLimitadoresBlocos; blocoAtual++)
+        {
+            float psX = (_posXInicial - (qtdLimitadoresBlocos * tamanhoBloco)) + tamanhoBloco * blocoAtual;
+            float psY = _blocoPrefab.transform.position.y;
+            float psZ = _blocoPrefab.transform.position.z + (tamanhoBloco * limiteLinhaCena);
+            posicaoBloco = new Vector3(psX, psY, psZ);
+
+            Instantiate(_blocoPrefab, posicaoBloco, _blocoPrefab.transform.rotation, blocosLimitadores);
+
+            // quantod blocos de sombra sera adicionado nessa parte | esquerda ou direita do mapa
+            for (int i = 0; i < _ocupaBlocos; i++)
+            {
+                Instantiate(blocoLimitador, 
+                    new Vector3(psX, blocoLimitador.transform.position.y, 
+                    (tamanhoBloco * limiteLinhaCena) + tamanhoBloco * i), 
+                    _blocoPrefab.transform.rotation, blocosLimitadores);
+            }
+        }
+
+        // blocos jogaveis
         for (int blocoAtual = 0; blocoAtual <= blocosLinhas; blocoAtual++)
         {
             posicaoBloco = new Vector3(_posXInicial + (tamanhoBloco * blocoAtual), _blocoPrefab.transform.position.y, _blocoPrefab.transform.position.z + (tamanhoBloco * limiteLinhaCena));
@@ -115,13 +161,42 @@ public class ProceduralMap : MonoBehaviour {
             }
         }
 
+        // gerar blocos limite lado direito
+        for (int blocoAtual = 0; blocoAtual < qtdLimitadoresBlocos; blocoAtual++)
+        {
+            float psX = (_posXInicial + (blocosLinhas + 1) * tamanhoBloco) + tamanhoBloco * blocoAtual;
+            float psY = _blocoPrefab.transform.position.y;
+            float psZ = _blocoPrefab.transform.position.z + (tamanhoBloco * limiteLinhaCena);
+            posicaoBloco = new Vector3(psX, psY, psZ);
+
+            Instantiate(_blocoPrefab, posicaoBloco, _blocoPrefab.transform.rotation, blocosLimitadores);
+
+            // quantod blocos de sombra sera adicionado nessa parte | esquerda ou direita do mapa
+            for (int i = 0; i < _ocupaBlocos; i++)
+            {
+                Instantiate(blocoLimitador,
+                    new Vector3(psX, blocoLimitador.transform.position.y,
+                    (tamanhoBloco * limiteLinhaCena) + tamanhoBloco * i),
+                    _blocoPrefab.transform.rotation, blocosLimitadores);
+            }
+        }
+
         limiteLinhaCena += _ocupaBlocos;
 
     }
 
-    void GerarLinhaInicialFinal()
+    void GerarLinhaInicialFinal(GameObject _blocoPrefab, int meio, int linhaAtual, float posXinicial, float posZInicial)
     {
+        Vector3 posicaoBloco = Vector3.zero;
 
+        for (int blocoAtual = 0; blocoAtual <= (blocosLinhas + (qtdLimitadoresBlocos * 2)); blocoAtual++)
+        {
+            posicaoBloco = new Vector3(posXinicial + (tamanhoBloco * blocoAtual), _blocoPrefab.transform.position.y, posZInicial + (tamanhoBloco * linhaAtual));
+            Instantiate(_blocoPrefab, posicaoBloco, _blocoPrefab.transform.rotation, blocosLimitadores);
+
+            // instanciando os blocos limitadores
+            Instantiate(blocoLimitador, new Vector3(posicaoBloco.x, blocoLimitador.transform.position.y, posicaoBloco.z), blocoLimitador.transform.rotation, blocosLimitadores);
+        }
     }
 
     void InserirDecoracao(Vector3 _posicaoBloco)

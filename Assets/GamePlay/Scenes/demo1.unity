@@ -626,7 +626,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4069369816323420, guid: 8c62cce894e1ceb458b75be888f11f95, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -20.9
+      value: -0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4069369816323420, guid: 8c62cce894e1ceb458b75be888f11f95, type: 2}
       propertyPath: m_LocalPosition.y
@@ -931,14 +931,15 @@ MonoBehaviour:
   spawnAguaL: 0
   blocoChegada: {fileID: 1153856807802310, guid: 4d297528b73b7f643b12786c0de09ea4,
     type: 2}
-  blocoLimitador: {fileID: 0}
+  blocoLimitador: {fileID: 1436987045555700, guid: 43d2d62bbe8974048981163f60ca544a,
+    type: 2}
   spawnPrefab: {fileID: 1826396302328088, guid: de3540742d103524ebed0863368185d5,
     type: 2}
   limiteLinhaCena: 0
-  blocosLinhas: 10
-  qtdLinhas: 20
+  blocosLinhas: 20
+  qtdLinhas: 30
   qtdLinhasInicioFim: 3
-  qtdLimitadoresBlocos: 5
+  qtdLimitadoresBlocos: 8
   decoracaoPrefab:
   - {fileID: 1516573935825318, guid: d775a100737ffec44af45f6a53e3b75c, type: 2}
   coletaveisPrefab:
@@ -2688,7 +2689,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: -200
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -2734,7 +2735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1808823637}
   moveSpeed: 2
-  offset: {x: 45, y: 60, z: -50}
+  offset: {x: 45, y: 45, z: -50}
   rotX: 25
   rotY: -35
   isFollow: 1
